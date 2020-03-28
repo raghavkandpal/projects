@@ -39,7 +39,7 @@ def predictor():
     pred=testing()
     if pred=="empty":
         txt.configure(state="normal")
-        txt.insert(tk.INSERT,"Please Clear and Draw Alphabet")
+        txt.insert(tk.INSERT,"Please Draw Alphabet")
         txt.configure(state="disabled")
     else:
         print('alphabet',classes[np.argmax(pred[0])])
