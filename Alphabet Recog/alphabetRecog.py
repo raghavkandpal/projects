@@ -12,12 +12,17 @@ def prediction():
     img=cv2.imread('image.png',0)
     img=cv2.bitwise_not(img)
     img=cv2.resize(img,(28,28))
-    img=img.reshape(1,28,28,1)
-    img=img.astype('float32')
-    img=img/255
+    comparison = img == all_zeros
+    equal_arrays = comparison.all()
+    if equal_arrays:
+        return "empty"
+    else:
+        img=img.reshape(1,28,28,1)
+        img=img.astype('float32')
+        img=img/255
 
-    pred=model.predict(img)
-    return pred
+        pred=model.predict(img)
+        return pred
 	
 def paint(event):
     x1, y1 = (event.x - 10), (event.y - 10)
@@ -28,11 +33,19 @@ def paint(event):
 def predictor():
     filename = "image.png"
     image1.save(filename)
-    pred=prediction()
-    print('alphabet',classes[np.argmax(pred[0])])
     txt.configure(state="normal")
-    txt.insert(tk.INSERT,"{}\nAccuracy: {}%".format(classes[np.argmax(pred[0])],round(pred[0][np.argmax(pred[0])]*100,3)))
+    txt.delete('1.0', END)
     txt.configure(state="disabled")
+    pred=testing()
+    if pred=="empty":
+        txt.configure(state="normal")
+        txt.insert(tk.INSERT,"Please Clear and Draw Alphabet")
+        txt.configure(state="disabled")
+    else:
+        print('alphabet',classes[np.argmax(pred[0])])
+        txt.configure(state="normal")
+        txt.insert(tk.INSERT,"{}\nAccuracy: {}%".format(classes[np.argmax(pred[0])],round(pred[0][np.argmax(pred[0])]*100,3)))
+        txt.configure(state="disabled")
     
 def clear():
     canvas.delete('all')
@@ -46,6 +59,7 @@ classes={0:'A',1:'B',2:'C',3:'D',4:'E',5:'F',6:'G',7:'H',8:'I',9:'J',10:'K',11:'
 width=400
 height=400
 white=(255, 255, 255)
+all_zeros=np.zeros((28,28))
 
 root = Tk()
 
