@@ -1,4 +1,4 @@
-<h2>StackOverflow assistant bot</h2>
+<h2>StackOverflow Assistant Bot</h2>
 
 Here is a dialogue chat bot, which will be able to:
 
